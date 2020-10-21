@@ -18,9 +18,13 @@ services:
       dockerfile: Dockerfile
     volumes:
     - ./:/app
+    depends_on:
+      - postgres
+    links:
+      - postgres
 
   postgres:
-    image: postgres:13-alpine
+    image: postgres:12-alpine
     environment:
       POSTGRES_USER: app
       POSTGRES_PASSWORD: secret
