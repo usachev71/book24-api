@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\TransactionRepository;
+use DateTimeImmutable;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -17,29 +19,29 @@ class Transaction
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private int $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private int $amount;
+    private ?int $amount;
 
     /**
      * @ORM\Column(type="datetime_immutable")
      */
-    private \DateTimeInterface $date;
+    private ?DateTimeImmutable $date;
 
     /**
      * @ORM\ManyToOne(targetEntity=Account::class, inversedBy="debitTransaction")
      * @ORM\JoinColumn(nullable=false)
      */
-    private Account $debitAccount;
+    private ?Account $debitAccount;
 
     /**
      * @ORM\ManyToOne(targetEntity=Account::class, inversedBy="creditTransaction")
      * @ORM\JoinColumn(nullable=false)
      */
-    private Account $creditTransaction;
+    private ?Account $creditTransaction;
 
     public function getId(): ?int
     {
@@ -58,12 +60,12 @@ class Transaction
         return $this;
     }
 
-    public function getDate(): ?\DateTimeImmutable
+    public function getDate(): ?DateTimeImmutable
     {
         return $this->date;
     }
 
-    public function setDate(\DateTimeImmutable $date): self
+    public function setDate(DateTimeImmutable $date): self
     {
         $this->date = $date;
 

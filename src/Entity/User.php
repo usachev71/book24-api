@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\Table(name="`users`")
  */
 class User
 {
@@ -17,22 +18,28 @@ class User
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private int $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private string $name;
+    private ?string $name;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private string $email;
+    private ?string $email;
 
     /**
-     * @ORM\OneToOne(targetEntity=Account::class, mappedBy="userId", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Account::class, mappedBy="userOwner", cascade={"persist", "remove"})
      */
-    private $account;
+    private ?Account $account;
+
+    public function __construct(string $name, string $email)
+    {
+        $this->name = $name;
+        $this->email = $email;
+    }
 
     public function getId(): ?int
     {
@@ -73,8 +80,8 @@ class User
         $this->account = $account;
 
         // set the owning side of the relation if necessary
-        if ($account->getUserId() !== $this) {
-            $account->setUserId($this);
+        if ($account->getUserOwner() !== $this) {
+            $account->setUserOwner($this);
         }
 
         return $this;

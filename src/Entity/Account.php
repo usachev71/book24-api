@@ -19,26 +19,26 @@ class Account
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private int $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private int $balance;
+    private ?int $balance;
 
     /**
      * @ORM\OneToOne(targetEntity=User::class, inversedBy="account", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private int $userId;
+    private ?User $userOwner;
 
     /**
-     * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="debitAccount")
+     * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="debitAccount", orphanRemoval=true)
      */
     private $debitTransaction;
 
     /**
-     * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="creditTransaction")
+     * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="creditTransaction", orphanRemoval=true)
      */
     private $creditTransaction;
 
@@ -65,14 +65,14 @@ class Account
         return $this;
     }
 
-    public function getUserId(): ?User
+    public function getUserOwner(): ?User
     {
-        return $this->userId;
+        return $this->userOwner;
     }
 
-    public function setUserId(User $userId): self
+    public function setUserOwner(User $userOwner): self
     {
-        $this->userId = $userId;
+        $this->userOwner = $userOwner;
 
         return $this;
     }
