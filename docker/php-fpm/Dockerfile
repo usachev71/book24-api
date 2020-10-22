@@ -12,3 +12,6 @@ RUN apk add --no-cache postgresql-dev \
 COPY ./conf.d /usr/local/etc/php/conf.d
 
 WORKDIR /app
+
+ENV COMPOSER_ALLOW_SUPERUSER 1
+RUN curl -sL https://getcomposer.org/installer | php -- --install-dir /usr/bin --filename composer
