@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Transaction\Create;
 
+use App\Model\Transaction\Services\CreateTransactionService;
 use App\Repository\AccountRepository;
 use App\Repository\TransactionRepository;
 use App\Repository\UserRepository;
@@ -16,29 +17,20 @@ class CreateHandler
     private $userRepository;
 
     /**
-     * @var AccountRepository
+     * @var CreateTransactionService
      */
-    private $accountRepository;
-
-    /**
-     * @var TransactionRepository
-     */
-    private $transactionRepository;
+    private CreateTransactionService $createTransaction;
 
     /**
      * CreateHandler constructor.
      * @param UserRepository $userRepository
-     * @param AccountRepository $accountRepository
-     * @param TransactionRepository $transactionRepository
      */
     public function __construct(
         UserRepository $userRepository,
-        AccountRepository $accountRepository,
-        TransactionRepository $transactionRepository
+        CreateTransactionService $createTransaction
     ) {
         $this->userRepository = $userRepository;
-        $this->accountRepository = $accountRepository;
-        $this->transactionRepository = $transactionRepository;
+        $this->createTransaction = $createTransaction;
     }
 
     /**
@@ -49,6 +41,6 @@ class CreateHandler
         $fromUser = $this->userRepository->findByEmail($command->from_user);
         $toUser = $this->userRepository->findByEmail($command->to_user);
 
-
+        $this->createTransaction->create($fromUser, $toUser, $command->amount);
     }
 }
