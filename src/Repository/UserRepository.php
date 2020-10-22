@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Exception\EntityNotFoundException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
@@ -24,8 +25,8 @@ class UserRepository extends ServiceEntityRepository
 
     public function findByEmail(string $email)
     {
-        if (!$user = $this->findBy(["email" => $email])) {
-            throw new EntityNotFoundException('Пользователь не найден');
+        if (!$user = $this->findOneBy(["email" => $email])) {
+            throw new EntityNotFoundException('Пользователь не найден', Response::HTTP_BAD_REQUEST);
         }
         return $user;
     }

@@ -41,7 +41,21 @@ class Transaction
      * @ORM\ManyToOne(targetEntity=Account::class, inversedBy="creditTransaction")
      * @ORM\JoinColumn(nullable=false)
      */
-    private ?Account $creditTransaction;
+    private ?Account $creditAccount;
+
+    /**
+     * Transaction constructor.
+     * @param Account $debitAccount
+     * @param Account $creditAccount
+     * @param int $amount
+     */
+    public function __construct(Account $debitAccount, Account $creditAccount, int $amount)
+    {
+        $this->debitAccount = $debitAccount;
+        $this->creditAccount = $creditAccount;
+        $this->amount = $amount;
+        $this->date = new DateTimeImmutable("now");
+    }
 
     public function getId(): ?int
     {
@@ -84,14 +98,14 @@ class Transaction
         return $this;
     }
 
-    public function getCreditTransaction(): ?Account
+    public function getCreditAccount(): ?Account
     {
-        return $this->creditTransaction;
+        return $this->creditAccount;
     }
 
-    public function setCreditTransaction(?Account $creditTransaction): self
+    public function setCreditAccount(?Account $creditAccount): self
     {
-        $this->creditTransaction = $creditTransaction;
+        $this->creditAccount = $creditAccount;
 
         return $this;
     }

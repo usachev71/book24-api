@@ -38,7 +38,7 @@ class Account
     private $debitTransaction;
 
     /**
-     * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="creditTransaction", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="creditAccount", orphanRemoval=true)
      */
     private $creditTransaction;
 
@@ -120,7 +120,7 @@ class Account
     {
         if (!$this->creditTransaction->contains($creditTransaction)) {
             $this->creditTransaction[] = $creditTransaction;
-            $creditTransaction->setCreditTransaction($this);
+            $creditTransaction->setCreditAccount($this);
         }
 
         return $this;
@@ -131,8 +131,8 @@ class Account
         if ($this->creditTransaction->contains($creditTransaction)) {
             $this->creditTransaction->removeElement($creditTransaction);
             // set the owning side to null (unless already changed)
-            if ($creditTransaction->getCreditTransaction() === $this) {
-                $creditTransaction->setCreditTransaction(null);
+            if ($creditTransaction->getCreditAccount() === $this) {
+                $creditTransaction->setCreditAccount(null);
             }
         }
 
