@@ -34,7 +34,7 @@ class TransactionController extends AbstractController
         if ($form->isValid()) {
             try {
                 $createHandler->handler($command);
-                return $this->json(["message" => "Условные единицы успешно переведены"], Response::HTTP_OK);
+                return $this->json(["message" => "Транзакция успешно создана"], Response::HTTP_CREATED);
             } catch (\DomainException $e) {
                 return $this->json(["message" => $e->getMessage()], $e->getCode());
             }
